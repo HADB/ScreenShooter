@@ -1,5 +1,5 @@
 body {
-    width: 250px;
+    min-width: 150px;
     color: #000;
     font: 16px/20px 'Microsoft Yahei',Helvetica,arial,sans-serif;
     padding: 0;
@@ -18,7 +18,7 @@ ul {
     }
 
         ul li:hover {
-            background-color: #eceff5;
+            background-color: #faf2cc;
             color: #000;
             cursor: pointer;
         }
@@ -28,6 +28,7 @@ ul {
             text-decoration: none;
             display: block;
             padding: 2px 8px;
+            white-space: nowrap;
         }
 
             ul li a i {
