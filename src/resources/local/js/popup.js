@@ -5,4 +5,10 @@ $(function () {
         });
         window.close();
     });
+    $("#options").click(function () {
+        chrome.tabs.create({
+            url: chrome.extension.getURL("pages/options.html")
+        });
+        window.close();
+    });
 });
