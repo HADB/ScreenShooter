@@ -1,49 +1,56 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+var screenShooter = {
+    content: document.createElement("canvas"),
+    data: '',
 
-// To make sure we can uniquely identify each screenshot tab, add an id as a
-// query param to the url that displays the screenshot.
-// Note: It's OK that this is a global variable (and not in localStorage),
-// because the event page will stay open as long as any screenshot tabs are
-// open.
-var id = 100;
+    init: function () {
+        this.initEvents();
+    },
 
-// Listen for a click on the camera icon. On that click, take a screenshot.
-chrome.browserAction.onClicked.addListener(function () {
+    savescreenShooter: function () {
+        var image = new Image();
+        image.onload = function () {
+            var canvas = screenShooter.content;
+            canvas.width = image.width;
+            canvas.height = image.height;
+            var context = canvas.getContext("2d");
+            context.drawImage(image, 0, 0);
 
-    chrome.tabs.captureVisibleTab(function (screenshotUrl) {
-        var viewTabUrl = chrome.extension.getURL('screen-shooter.html?id=' + id++)
-        var targetId = null;
+            // save the image
+            var link = document.createElement('a');
+            link.download = "download.png";
+            link.href = screenShooter.content.toDataURL();
+            link.click();
+            screenShooter.data = '';
+        };
+        image.src = screenShooter.data;
+    },
 
-        chrome.tabs.onUpdated.addListener(function listener(tabId, changedProps) {
-            // We are waiting for the tab we opened to finish loading.
-            // Check that the tab's id matches the tab we opened,
-            // and that the tab is done loading.
-            if (tabId != targetId || changedProps.status != "complete")
-                return;
+    initEvents: function () {
+        chrome.browserAction.onClicked.addListener(function (tab) {
+            chrome.tabs.captureVisibleTab(null, {
+                format: "png",
+                quality: 100
+            }, function (data) {
+                screenShooter.data = data;
 
-            // Passing the above test means this is the event we were waiting for.
-            // There is nothing we need to do for future onUpdated events, so we
-            // use removeListner to stop getting called when onUpdated events fire.
-            chrome.tabs.onUpdated.removeListener(listener);
+                // send an alert message to webpage
+                chrome.tabs.query({
+                    active: true,
+                    currentWindow: true
+                }, function (tabs) {
+                    chrome.tabs.sendMessage(tabs[0].id, { ready: "ready" }, function (response) {
+                        //if (response.download === "download") {
+                        screenShooter.savescreenShooter();
+                        //}
+                        //else {
+                        //    screenShooter.data = '';
+                        //}
+                    });
+                });
 
-            // Look through all views to find the window which will display
-            // the screenshot.  The url of the tab which will display the
-            // screenshot includes a query parameter with a unique id, which
-            // ensures that exactly one view will have the matching URL.
-            var views = chrome.extension.getViews();
-            for (var i = 0; i < views.length; i++) {
-                var view = views[i];
-                if (view.location.href == viewTabUrl) {
-                    view.setScreenshotUrl(screenshotUrl);
-                    break;
-                }
-            }
+            });
         });
+    }
+};
 
-        chrome.tabs.create({ url: viewTabUrl }, function (tab) {
-            targetId = tab.id;
-        });
-    });
-});
+screenShooter.init();

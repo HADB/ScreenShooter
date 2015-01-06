@@ -1,0 +1,41 @@
+body {
+    width: 250px;
+    color: #000;
+    font: 16px/20px 'Microsoft Yahei',Helvetica,arial,sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+    ul li {
+        list-style: none;
+        height: 20px;
+        padding: 8px 0;
+    }
+
+        ul li:hover {
+            background-color: #eceff5;
+            color: #000;
+            cursor: pointer;
+        }
+
+        ul li a {
+            color: #303030;
+            text-decoration: none;
+            display: block;
+            padding: 2px 8px;
+        }
+
+            ul li a i {
+                padding-right: 8px;
+            }
+
+.moreLinks {
+    margin-top: 8px;
+    border-top: 1px solid #aaa;
+    padding-top: 2px;
+}
