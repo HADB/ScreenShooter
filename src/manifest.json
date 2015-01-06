@@ -3,19 +3,19 @@
     "version": "0.1",
     "description": "Newegg Screenshot extension",
     "icons": {
-        "16": "img/icon16.png",
-        "32": "img/icon32.png",
-        "48": "img/icon48.png",
-        "128": "img/icon128.png",
-        "256": "img/icon256.png"
+        "16": "resources/local/img/icon16.png",
+        "32": "resources/local/img/icon32.png",
+        "48": "resources/local/img/icon48.png",
+        "128": "resources/local/img/icon128.png",
+        "256": "resources/local/img/icon256.png"
     },
     "background": {
         "persistent": false,
-        "scripts": [ "js/background.js" ]
+        "scripts": [ "resources/local/js/background.js" ]
     },
     "browser_action": {
-        "default_icon": "img/icon19.png",
-        "default_popup": "popup.html",
+        "default_icon": "resources/local/img/icon19.png",
+        "default_popup": "pages/popup.html",
         "default_title": "Take a screenshot & Email!"
     },
     "permissions": [ "tabs", "<all_urls>", "activeTab" ],
