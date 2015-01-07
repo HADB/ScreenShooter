@@ -1,15 +1,15 @@
 $(function () {
     chrome.runtime.sendMessage({ action: "get-screenshot-data" }, function (response) {
-        if (response.dataUrl) {
-            setScreenshotImage(response.dataUrl);
+        if (response.data) {
+            setScreenshotImage(response.data);
         }
     });
 });
 
-function setScreenshotImage(url) {
+function setScreenshotImage(data) {
 
     var image = new Image();
-    image.src = url;
+    image.src = data;
     image.onload = function () {
         var canvas = $("#screenshot")[0];
         canvas.width = image.width;
@@ -18,4 +18,3 @@ function setScreenshotImage(url) {
         context.drawImage(image, 0, 0);
     };
 }
-

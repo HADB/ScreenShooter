@@ -1,20 +1,18 @@
 $(function () {
     $("#visible").click(function () {
-        window.close();
-        chrome.runtime.sendMessage({ action: "open-page", pageName: "visible" });
+        openPage("visible");
     });
 
     $("#help").click(function () {
-        window.close();
-        chrome.tabs.create({
-            url: chrome.extension.getURL("pages/help.html")
-        });
+        openPage("help");
     });
 
     $("#options").click(function () {
-        window.close();
-        chrome.tabs.create({
-            url: chrome.extension.getURL("pages/options.html")
-        });
+        openPage("options");
     });
 });
+
+function openPage(pageName) {
+    window.close();
+    chrome.runtime.sendMessage({ action: "open-page", pageName: pageName });
+}

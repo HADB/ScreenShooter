@@ -1,18 +1,29 @@
 var screenShooter = {
-    dataUrl: {}
+    data: {}
 };
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    var name = request.name;
-    var action = request.action;
-    if (name === "log") {
-        console.log("log");
-    }
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    var action = message.action;
 
     if (action === "open-page") {
-        if (request.pageName === "visible") {
-            chrome.tabs.captureVisibleTab({ format: "png", quality: 100 }, function (dataUrl) {
-                screenShooter.dataUrl = dataUrl;
+        if (message.pageName === "help") {
+            chrome.tabs.create({
+                url: chrome.extension.getURL("pages/help.html")
+            });
+        }
+
+        else if (message.pageName === "options") {
+            chrome.tabs.create({
+                url: chrome.extension.getURL("pages/options.html")
+            });
+        }
+
+        else if (message.pageName === "visible") {
+            chrome.tabs.captureVisibleTab({
+                format: "png",
+                quality: 100
+            }, function (data) {
+                screenShooter.data = data;
                 chrome.tabs.create({
                     url: chrome.extension.getURL("pages/edit.html")
                 });
@@ -20,7 +31,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }
     }
 
-    if (action === "get-screenshot-data") {
-        sendResponse({ dataUrl: screenShooter.dataUrl });
+    else if (action === "get-screenshot-data") {
+        sendResponse({ data: screenShooter.data });
     }
 });
