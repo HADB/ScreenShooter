@@ -5,16 +5,29 @@
     <title>编辑 - ScreenShooter</title>
     <link href="../resources/third-party/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="../resources/local/css/common.css" rel="stylesheet">
-    <link href="../resources/local/css/help.css" rel="stylesheet">
+    <link href="../resources/local/css/edit.css" rel="stylesheet" />
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>ScreenShooter</h1>
-            <h2>编辑</h2>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="title">ScreenShooter</div>
+                <div class="tools">
+                    <div class="tool rectangle" title="矩形"></div>
+                    <div class="tool ellipsis" title="椭圆"></div>
+                    <div class="tool text" title="文字"></div>
+                    <div class="tool line" title="线条"></div>
+                    <div class="tool arrow" title="箭头"></div>
+                    <div class="tool crop" title="剪裁"></div>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary">另存为文件</button>
+                    <button type="button" class="btn btn-primary">保存并发邮件</button>
+                </div>
+            </div>
         </div>
     </header>
-    <div>
+    <div class="body">
         <canvas id="screenshot"></canvas>
     </div>
     <script src="../resources/third-party/jquery/2.1.1/jquery-2.1.1.min.js"></script>

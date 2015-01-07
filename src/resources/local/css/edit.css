@@ -1,0 +1,84 @@
+header {
+    padding: 0;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 3000;
+    height: 45px;
+}
+
+    header h1 {
+        color: #FFF;
+    }
+
+    header .title {
+        float: left;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 10px;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
+    }
+
+    header .tools {
+        float: left;
+        margin-left: 40px;
+        margin-top: 6px;
+        border: 1px #dbdbdb solid;
+        border-radius: 3px;
+        background-color: #eaeaea;
+    }
+
+        header .tools .tool {
+            float: left;
+            height: 30px;
+            width: 30px;
+            border-right: 1px #dbdbdb solid;
+            background-position: center center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+            header .tools .tool:hover {
+                background-color: #D5D5D5;
+            }
+
+            header .tools .tool:last-child {
+                border-right: none;
+            }
+
+    header .buttons {
+        float: right;
+        margin-right: 40px;
+        margin-top: 6px;
+    }
+
+.tools .line {
+    background-image: url(../img/line.png);
+}
+
+.tools .text {
+    background-image: url(../img/text.png);
+}
+
+.tools .rectangle {
+    background-image: url(../img/rectangle.png);
+}
+
+.tools .ellipsis {
+    background-image: url(../img/ellipsis.png);
+}
+
+.tools .arrow {
+    background-image: url(../img/arrow.png);
+}
+
+.tools .crop {
+    background-image: url(../img/crop.png);
+}
+
+.body {
+    margin-top: 45px;
+}
