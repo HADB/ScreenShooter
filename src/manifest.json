@@ -10,8 +10,7 @@
         "256": "resources/local/img/icon256.png"
     },
     "background": {
-        "persistent": false,
-        "scripts": [ "resources/local/js/background.js" ]
+        "page": "pages/background.html"
     },
     "browser_action": {
         "default_icon": "resources/local/img/icon19.png",
