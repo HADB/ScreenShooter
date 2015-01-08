@@ -4,7 +4,7 @@ var screenShooter = {
         line: 1,
         free: 2,
         rectangle: 3,
-        ellipsis: 4,
+        ellipse: 4,
         text: 5,
         arrow: 6,
         crop: 7

@@ -62,10 +62,10 @@ $(function () {
         setSelectable(false);
     });
 
-    $('.tool.ellipsis').click(function () {
-        screenShooter.edit.tool = screenShooter.tools.ellipsis;
+    $('.tool.ellipse').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.ellipse;
         $('.tool').removeClass('selected');
-        $('.tool.ellipsis').addClass('selected');
+        $('.tool.ellipse').addClass('selected');
         setSelectable(false);
     });
 
@@ -167,6 +167,23 @@ function initCanvas(data) {
                     hasBorders: false
                 });
                 break;
+            case screenShooter.tools.ellipse:
+                obj = new fabric.Ellipse({
+                    left: pointer.x,
+                    top: pointer.y,
+                    originX: 'left',
+                    originY: 'top',
+                    rx: 0,
+                    ry: 0,
+                    angle: 0,
+                    fill: null,
+                    stroke: 'red',
+                    strokeWidth: 3,
+                    hasControls: false,
+                    hasBorders: false
+                });
+                console.log(1);
+                break;
             case screenShooter.tools.free:
                 break;
             case screenShooter.tools.move:
@@ -187,6 +204,7 @@ function initCanvas(data) {
                     obj.set({ x2: pointer.x, y2: pointer.y });
 
                     break;
+
                 case screenShooter.tools.rectangle:
                     if (startX > pointer.x) {
                         obj.set({ left: Math.abs(pointer.x) });
@@ -197,6 +215,18 @@ function initCanvas(data) {
 
                     obj.set({ width: Math.abs(startX - pointer.x) });
                     obj.set({ height: Math.abs(startY - pointer.y) });
+                    break;
+
+                case screenShooter.tools.ellipse:
+                    if (startX > pointer.x) {
+                        obj.set({ left: Math.abs(pointer.x) });
+                    }
+                    if (startY > pointer.y) {
+                        obj.set({ top: Math.abs(pointer.y) });
+                    }
+
+                    obj.set({ rx: Math.abs((startX - pointer.x) / 2) });
+                    obj.set({ ry: Math.abs((startY - pointer.y) / 2) });
                     break;
                 case screenShooter.tools.move:
                     break;

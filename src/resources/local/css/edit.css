@@ -75,8 +75,8 @@ header {
     background-image: url(../img/rectangle.png);
 }
 
-.tools .ellipsis {
-    background-image: url(../img/ellipsis.png);
+.tools .ellipse {
+    background-image: url(../img/ellipse.png);
 }
 
 .tools .arrow {
