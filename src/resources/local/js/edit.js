@@ -59,56 +59,56 @@ $(function () {
         screenShooter.edit.tool = screenShooter.tools.rectangle;
         $('.tool').removeClass('selected');
         $('.tool.rectangle').addClass('selected');
-        screenShooter.edit.canvas.selection = false;
+        setSelectable(false);
     });
 
     $('.tool.ellipsis').click(function () {
         screenShooter.edit.tool = screenShooter.tools.ellipsis;
         $('.tool').removeClass('selected');
         $('.tool.ellipsis').addClass('selected');
-        screenShooter.edit.canvas.selection = false;
+        setSelectable(false);
     });
 
     $('.tool.text').click(function () {
         screenShooter.edit.tool = screenShooter.tools.text;
         $('.tool').removeClass('selected');
         $('.tool.text').addClass('selected');
-        screenShooter.edit.canvas.selection = false;
+        setSelectable(false);
     });
 
     $('.tool.arrow').click(function () {
         screenShooter.edit.tool = screenShooter.tools.arrow;
         $('.tool').removeClass('selected');
         $('.tool.arrow').addClass('selected');
-        screenShooter.edit.canvas.selection = false;
+        setSelectable(false);
     });
 
     $('.tool.line').click(function () {
         screenShooter.edit.tool = screenShooter.tools.line;
         $('.tool').removeClass('selected');
         $('.tool.line').addClass('selected');
-        screenShooter.edit.canvas.selection = false;
+        setSelectable(false);
     });
 
     $('.tool.free').click(function () {
         screenShooter.edit.tool = screenShooter.tools.free;
         $('.tool').removeClass('selected');
         $('.tool.free').addClass('selected');
-        screenShooter.edit.canvas.selection = false;
+        setSelectable(false);
     });
 
     $('.tool.move').click(function () {
         screenShooter.edit.tool = screenShooter.tools.move;
         $('.tool').removeClass('selected');
         $('.tool.move').addClass('selected');
-        screenShooter.edit.canvas.selection = true;
+        setSelectable(true);
     });
 
     $('.tool.crop').click(function () {
         screenShooter.edit.tool = screenShooter.tools.crop;
         $('.tool').removeClass('selected');
         $('.tool.crop').addClass('selected');
-        screenShooter.edit.canvas.selection = false;
+        setSelectable(false);
     });
 });
 
@@ -132,6 +132,7 @@ function initCanvas(data) {
     var isDown;
     var startX;
     var startY;
+    var canvas = screenShooter.edit.canvas;
     canvas.on('mouse:down', function (o) {
         isDown = true;
         var pointer = canvas.getPointer(o.e);
@@ -169,42 +170,54 @@ function initCanvas(data) {
             case screenShooter.tools.free:
                 break;
             case screenShooter.tools.move:
-                canvas.forEachObject(function (obj) {
-                    obj.set('selectable', true);
-                });
+
                 break;
         }
+
         if (obj) {
             canvas.add(obj);
         }
     });
 
     canvas.on('mouse:move', function (o) {
-        if (!isDown) return;
-        var pointer = canvas.getPointer(o.e);
-        switch (screenShooter.edit.tool) {
-            case screenShooter.tools.line:
-                obj.set({ x2: pointer.x, y2: pointer.y });
-                canvas.renderAll();
-                break;
-            case screenShooter.tools.rectangle:
-                if (startX > pointer.x) {
-                    obj.set({ left: Math.abs(pointer.x) });
-                }
-                if (startY > pointer.y) {
-                    obj.set({ top: Math.abs(pointer.y) });
-                }
+        if (isDown && obj) {
+            var pointer = canvas.getPointer(o.e);
+            switch (screenShooter.edit.tool) {
+                case screenShooter.tools.line:
+                    obj.set({ x2: pointer.x, y2: pointer.y });
 
-                obj.set({ width: Math.abs(startX - pointer.x) });
-                obj.set({ height: Math.abs(startY - pointer.y) });
-                canvas.renderAll();
-                break;
+                    break;
+                case screenShooter.tools.rectangle:
+                    if (startX > pointer.x) {
+                        obj.set({ left: Math.abs(pointer.x) });
+                    }
+                    if (startY > pointer.y) {
+                        obj.set({ top: Math.abs(pointer.y) });
+                    }
+
+                    obj.set({ width: Math.abs(startX - pointer.x) });
+                    obj.set({ height: Math.abs(startY - pointer.y) });
+                    break;
+                case screenShooter.tools.move:
+                    break;
+            }
+            canvas.renderAll();
         }
     });
 
     canvas.on('mouse:up', function (o) {
         isDown = false;
-        obj = null;
+        if (obj) {
+            obj.setCoords();
+            obj.set('selectable', false);
+            obj = null;
+        }
+    });
+}
+
+function setSelectable(selectable) {
+    screenShooter.edit.canvas.forEachObject(function (obj) {
+        obj.set('selectable', selectable);
     });
 }
 
