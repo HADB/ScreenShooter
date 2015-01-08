@@ -1,7 +1,12 @@
+screenShooter.edit = {
+    tool: screenShooter.tools.line,
+    canvas: {}
+};
+
 $(function () {
     chrome.runtime.sendMessage({ action: 'get-screenshot-data' }, function (response) {
         if (response.data) {
-            setScreenshotImage(response.data);
+            initCanvas(response.data);
         }
     });
 
@@ -49,19 +54,161 @@ $(function () {
             }
         });
     });
+
+    $('.tool.rectangle').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.rectangle;
+        $('.tool').removeClass('selected');
+        $('.tool.rectangle').addClass('selected');
+        screenShooter.edit.canvas.selection = false;
+    });
+
+    $('.tool.ellipsis').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.ellipsis;
+        $('.tool').removeClass('selected');
+        $('.tool.ellipsis').addClass('selected');
+        screenShooter.edit.canvas.selection = false;
+    });
+
+    $('.tool.text').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.text;
+        $('.tool').removeClass('selected');
+        $('.tool.text').addClass('selected');
+        screenShooter.edit.canvas.selection = false;
+    });
+
+    $('.tool.arrow').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.arrow;
+        $('.tool').removeClass('selected');
+        $('.tool.arrow').addClass('selected');
+        screenShooter.edit.canvas.selection = false;
+    });
+
+    $('.tool.line').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.line;
+        $('.tool').removeClass('selected');
+        $('.tool.line').addClass('selected');
+        screenShooter.edit.canvas.selection = false;
+    });
+
+    $('.tool.free').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.free;
+        $('.tool').removeClass('selected');
+        $('.tool.free').addClass('selected');
+        screenShooter.edit.canvas.selection = false;
+    });
+
+    $('.tool.move').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.move;
+        $('.tool').removeClass('selected');
+        $('.tool.move').addClass('selected');
+        screenShooter.edit.canvas.selection = true;
+    });
+
+    $('.tool.crop').click(function () {
+        screenShooter.edit.tool = screenShooter.tools.crop;
+        $('.tool').removeClass('selected');
+        $('.tool.crop').addClass('selected');
+        screenShooter.edit.canvas.selection = false;
+    });
 });
 
-function setScreenshotImage(data) {
-
+function initCanvas(data) {
+    screenShooter.edit.canvas = new fabric.Canvas('screenshot', {
+        selection: false,
+    });
+    var canvas = screenShooter.edit.canvas;
     var image = new Image();
     image.src = data;
     image.onload = function () {
-        var canvas = $('#screenshot')[0];
-        canvas.width = image.width;
-        canvas.height = image.height;
-        var context = canvas.getContext('2d');
-        context.drawImage(image, 0, 0);
+        var bgImage = new fabric.Image(image);
+        canvas.setDimensions({
+            width: bgImage.getWidth(),
+            height: bgImage.getHeight()
+        });
+        canvas.setBackgroundImage(bgImage, canvas.renderAll.bind(canvas));
     };
+
+    var obj;
+    var isDown;
+    var startX;
+    var startY;
+    canvas.on('mouse:down', function (o) {
+        isDown = true;
+        var pointer = canvas.getPointer(o.e);
+        startX = pointer.x;
+        startY = pointer.y;
+        var points = [pointer.x, pointer.y, pointer.x, pointer.y];
+        switch (screenShooter.edit.tool) {
+            case screenShooter.tools.line:
+                obj = new fabric.Line(points, {
+                    strokeWidth: 5,
+                    fill: 'red',
+                    stroke: 'red',
+                    originX: 'center',
+                    originY: 'center',
+                    borderColor: 'black',
+                    cornerColor: 'black',
+                    cornerSize: 8,
+                    transparentCorners: false
+                });
+                break;
+            case screenShooter.tools.rectangle:
+                obj = new fabric.Rect({
+                    left: pointer.x,
+                    top: pointer.y,
+                    originX: 'left',
+                    originY: 'top',
+                    width: 0,
+                    height: 0,
+                    angle: 0,
+                    fill: null,
+                    stroke: 'red',
+                    strokeWidth: 3,
+                    cornerColor: 'black',
+                    cornerSize: 8,
+                    transparentCorners: false
+                });
+                break;
+            case screenShooter.tools.free:
+                break;
+            case screenShooter.tools.move:
+                canvas.forEachObject(function (obj) {
+                    obj.set('selectable', true);
+                });
+                break;
+        }
+        if (obj) {
+            canvas.add(obj);
+        }
+    });
+
+    canvas.on('mouse:move', function (o) {
+        if (!isDown) return;
+        var pointer = canvas.getPointer(o.e);
+        switch (screenShooter.edit.tool) {
+            case screenShooter.tools.line:
+                obj.set({ x2: pointer.x, y2: pointer.y });
+                canvas.renderAll();
+                break;
+            case screenShooter.tools.rectangle:
+                if (startX > pointer.x) {
+                    obj.set({ left: Math.abs(pointer.x) });
+                }
+                if (startY > pointer.y) {
+                    obj.set({ top: Math.abs(pointer.y) });
+                }
+
+                obj.set({ width: Math.abs(startX - pointer.x) });
+                obj.set({ height: Math.abs(startY - pointer.y) });
+                canvas.renderAll();
+                break;
+        }
+    });
+
+    canvas.on('mouse:up', function (o) {
+        isDown = false;
+        obj = null;
+    });
 }
 
 function saveToFile() {
@@ -75,7 +222,7 @@ function saveToFile() {
 
 function saveAndEmail() {
     $('.tools').hide();
-    $('#screenshot').hide();
+    $('.canvas-container').hide();
     $('.save-to-file').hide();
     $('.save-and-email').hide();
     $('.body .email').show();

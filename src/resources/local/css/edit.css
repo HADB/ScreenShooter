@@ -41,7 +41,7 @@ header {
             cursor: pointer;
         }
 
-            header .tools .tool:hover {
+            header .tools .tool:hover, .tool.selected {
                 background-color: #D5D5D5;
             }
 
@@ -55,8 +55,16 @@ header {
         margin-top: 6px;
     }
 
+.tools .move {
+    background-image: url(../img/move.png);
+}
+
 .tools .line {
     background-image: url(../img/line.png);
+}
+
+.tools .free {
+    background-image: url(../img/free.png);
 }
 
 .tools .text {
