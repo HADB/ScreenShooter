@@ -141,15 +141,13 @@ function initCanvas(data) {
         switch (screenShooter.edit.tool) {
             case screenShooter.tools.line:
                 obj = new fabric.Line(points, {
-                    strokeWidth: 5,
-                    fill: 'red',
-                    stroke: 'red',
                     originX: 'center',
                     originY: 'center',
-                    borderColor: 'black',
-                    cornerColor: 'black',
-                    cornerSize: 8,
-                    transparentCorners: false
+                    stroke: 'red',
+                    strokeWidth: 3,
+                    fill: 'red',
+                    hasControls: false,
+                    hasBorders: false
                 });
                 break;
             case screenShooter.tools.rectangle:
@@ -164,9 +162,8 @@ function initCanvas(data) {
                     fill: null,
                     stroke: 'red',
                     strokeWidth: 3,
-                    cornerColor: 'black',
-                    cornerSize: 8,
-                    transparentCorners: false
+                    hasControls: false,
+                    hasBorders: false
                 });
                 break;
             case screenShooter.tools.free:
