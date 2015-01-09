@@ -1,6 +1,6 @@
 {
     "name": "Screenshooter",
-    "version": "0.3",
+    "version": "0.4",
     "description": "Newegg Screenshot extension",
     "icons": {
         "16": "resources/local/img/icon16.png",
