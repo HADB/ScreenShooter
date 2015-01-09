@@ -20,3 +20,25 @@ header {
 .hide {
     display: none;
 }
+
+.bottom-area {
+    height: 60px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    padding-bottom: 8px;
+    margin: 8px auto 0 auto;
+}
+
+footer {
+    border-top: 1px solid #cecece;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+    footer p {
+        font-weight: bold;
+        text-align: center;
+    }
