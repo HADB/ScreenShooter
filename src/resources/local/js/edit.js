@@ -115,7 +115,7 @@ $(function () {
         resetCanvas();
         screenShooter.edit.canvas.isDrawingMode = true;
         screenShooter.edit.canvas.freeDrawingBrush.color = screenShooter.edit.color;
-        screenShooter.edit.canvas.freeDrawingBrush.width = 3;
+        screenShooter.edit.canvas.freeDrawingBrush.width = screenShooter.edit.lineWidth;
     });
 
     $('.tool.move').click(function () {
@@ -139,6 +139,7 @@ $(function () {
 
     $('.options .line-width input').on('change keyup paste', function () {
         screenShooter.edit.lineWidth = $('.options .line-width input').val();
+        screenShooter.edit.canvas.freeDrawingBrush.width = screenShooter.edit.lineWidth;
     });
 
     $('.options .font-size input').on('change keyup paste', function () {
@@ -147,6 +148,7 @@ $(function () {
 
     $('.options .color input').on('change keyup paste', function () {
         screenShooter.edit.color = $('.options .color input').val();
+        screenShooter.edit.canvas.freeDrawingBrush.color = screenShooter.edit.color;
     });
 });
 
