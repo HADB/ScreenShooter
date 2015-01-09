@@ -104,6 +104,11 @@ $(function () {
         $('.tool').removeClass('selected');
         $('.tool.move').addClass('selected');
         setSelectable(true);
+        screenShooter.edit.canvas.forEachObject(function (obj) {
+            if (obj.get('type') === 'i-text') {
+                obj.exitEditing();
+            }
+        });
     });
 
     $('.tool.crop').click(function () {
@@ -211,11 +216,13 @@ function initCanvas(data) {
                 if (screenShooter.edit.isMouseOver) {
                     return;
                 }
-
-                obj = new fabric.IText('请输入文字(不支持输入法)', {
+                setSelectable(false);
+                obj = new fabric.IText('双击输入文字(不支持输入法)', {
                     fontFamily: 'Microsoft Yahei',
                     left: pointer.x,
                     top: pointer.y,
+                    hasControls: false,
+                    hasBorders: false
                 });
 
                 obj.on('editing:entered', function (e) {
