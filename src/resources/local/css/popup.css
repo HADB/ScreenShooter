@@ -37,3 +37,7 @@ ul {
     border-top: 1px solid #aaa;
     padding-top: 2px;
 }
+
+.disabled {
+    color: #aaa;
+}

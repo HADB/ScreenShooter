@@ -16,3 +16,7 @@ header {
         font-size: 60px;
         color: #FFF;
     }
+
+.hide {
+    display: none;
+}

@@ -1,5 +1,5 @@
 screenShooter.edit = {
-    tool: screenShooter.tools.line,
+    tool: {},
     canvas: {},
     isMouseOver: false,
     isEditing: false
@@ -206,10 +206,6 @@ function initCanvas(data) {
                     strokeWidth: 3
                 });
                 break;
-            case screenShooter.tools.free:
-                break;
-            case screenShooter.tools.move:
-                break;
             case screenShooter.tools.text:
                 if (screenShooter.edit.isMouseOver) {
                     return;
@@ -224,6 +220,10 @@ function initCanvas(data) {
                 obj.on('editing:entered', function (e) {
                     screenShooter.edit.isEditing = true;
                 });
+                break;
+
+            case screenShooter.tools.arrow:
+                //TODO:添加箭头功能
                 break;
         }
 
