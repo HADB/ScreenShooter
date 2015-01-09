@@ -1,6 +1,8 @@
 screenShooter.edit = {
     tool: screenShooter.tools.line,
-    canvas: {}
+    canvas: {},
+    isMouseOver: false,
+    isEditing: false
 };
 
 $(function () {
@@ -133,7 +135,25 @@ function initCanvas(data) {
     var startX;
     var startY;
     var canvas = screenShooter.edit.canvas;
+
+    canvas.on('mouse:over', function (e) {
+        if (e.target.get('type') === 'i-text') {
+            screenShooter.edit.isMouseOver = true;
+        }
+    });
+
+    canvas.on('mouse:out', function (e) {
+        if (e.target.get('type') === 'i-text') {
+            screenShooter.edit.isMouseOver = false;
+        }
+    });
+
     canvas.on('mouse:down', function (o) {
+        if (!screenShooter.edit.isMouseOver && screenShooter.edit.isEditing === true) {
+            screenShooter.edit.isEditing = false;
+            return;
+        }
+
         isDown = true;
         var pointer = canvas.getPointer(o.e);
         startX = pointer.x;
@@ -182,12 +202,25 @@ function initCanvas(data) {
                     hasControls: false,
                     hasBorders: false
                 });
-                console.log(1);
                 break;
             case screenShooter.tools.free:
                 break;
             case screenShooter.tools.move:
+                break;
+            case screenShooter.tools.text:
+                if (screenShooter.edit.isMouseOver) {
+                    return;
+                }
 
+                obj = new fabric.IText('请输入文字(不支持输入法)', {
+                    fontFamily: 'Microsoft Yahei',
+                    left: pointer.x,
+                    top: pointer.y,
+                });
+
+                obj.on('editing:entered', function (e) {
+                    screenShooter.edit.isEditing = true;
+                });
                 break;
         }
 
@@ -228,7 +261,11 @@ function initCanvas(data) {
                     obj.set({ rx: Math.abs((startX - pointer.x) / 2) });
                     obj.set({ ry: Math.abs((startY - pointer.y) / 2) });
                     break;
+
                 case screenShooter.tools.move:
+                    break;
+                case screenShooter.tools.text:
+
                     break;
             }
             canvas.renderAll();
@@ -239,10 +276,18 @@ function initCanvas(data) {
         isDown = false;
         if (obj) {
             obj.setCoords();
-            obj.set('selectable', false);
+            if (screenShooter.edit.tool != screenShooter.tools.text) {
+                obj.set('selectable', false);
+            }
             obj = null;
         }
     });
+
+    document.onkeydown = function (e) {
+        if (e.keyCode === 46) {
+            canvas.remove(canvas.getActiveObject());
+        }
+    }
 }
 
 function setSelectable(selectable) {
