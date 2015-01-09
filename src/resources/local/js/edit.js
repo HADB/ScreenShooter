@@ -2,7 +2,10 @@ screenShooter.edit = {
     tool: {},
     canvas: {},
     isMouseOver: false,
-    isEditing: false
+    isEditing: false,
+    lineWidth: 3,
+    fontSize: 25,
+    color: '#FF0000'
 };
 
 $(function () {
@@ -103,7 +106,7 @@ $(function () {
         $('.tool.free').addClass('selected');
         resetCanvas();
         screenShooter.edit.canvas.isDrawingMode = true;
-        screenShooter.edit.canvas.freeDrawingBrush.color = 'red';
+        screenShooter.edit.canvas.freeDrawingBrush.color = screenShooter.edit.color;
         screenShooter.edit.canvas.freeDrawingBrush.width = 3;
     });
 
@@ -120,6 +123,22 @@ $(function () {
         $('.tool').removeClass('selected');
         $('.tool.crop').addClass('selected');
         resetCanvas();
+    });
+
+    $('.options .line-width input').val(screenShooter.edit.lineWidth);
+    $('.options .font-size input').val(screenShooter.edit.fontSize);
+    $('.options .color input').val(screenShooter.edit.color);
+
+    $('.options .line-width input').on('change keyup paste', function () {
+        screenShooter.edit.lineWidth = $('.options .line-width input').val();
+    });
+
+    $('.options .font-size input').on('change keyup paste', function () {
+        screenShooter.edit.fontSize = $('.options .font-size input').val();
+    });
+
+    $('.options .color input').on('change keyup paste', function () {
+        screenShooter.edit.color = $('.options .color input').val();
     });
 });
 
@@ -173,9 +192,9 @@ function initCanvas(data) {
                 obj = new fabric.Line(points, {
                     originX: 'center',
                     originY: 'center',
-                    stroke: 'red',
-                    strokeWidth: 3,
-                    fill: 'red'
+                    stroke: screenShooter.edit.color,
+                    strokeWidth: screenShooter.edit.lineWidth,
+                    fill: screenShooter.edit.color
                 });
                 break;
             case screenShooter.tools.rectangle:
@@ -188,8 +207,8 @@ function initCanvas(data) {
                     height: 0,
                     angle: 0,
                     fill: null,
-                    stroke: 'red',
-                    strokeWidth: 3
+                    stroke: screenShooter.edit.color,
+                    strokeWidth: screenShooter.edit.lineWidth
                 });
                 break;
             case screenShooter.tools.ellipse:
@@ -202,8 +221,8 @@ function initCanvas(data) {
                     ry: 0,
                     angle: 0,
                     fill: null,
-                    stroke: 'red',
-                    strokeWidth: 3
+                    stroke: screenShooter.edit.color,
+                    strokeWidth: screenShooter.edit.lineWidth
                 });
                 break;
             case screenShooter.tools.text:
@@ -212,8 +231,10 @@ function initCanvas(data) {
                 }
                 obj = new fabric.IText('双击输入文字(不支持输入法)', {
                     fontFamily: 'Microsoft Yahei',
+                    fontSize: screenShooter.edit.fontSize,
                     left: pointer.x,
                     top: pointer.y,
+                    fill: screenShooter.edit.color,
                     hasControls: false
                 });
 

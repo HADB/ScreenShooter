@@ -94,3 +94,27 @@ header {
 .email {
     margin-top: 100px;
 }
+
+.options {
+    float: left;
+    margin-left: 50px;
+    margin-top: 5px;
+    width: 400px;
+}
+
+    .options .input-group {
+        padding: 0 5px;
+        float: left;
+    }
+
+        .options .input-group input {
+            text-align: center;
+        }
+
+        .options .input-group.line-width, .options .input-group.font-size {
+            width: 110px;
+        }
+
+        .options .input-group.color {
+            width: 160px;
+        }
