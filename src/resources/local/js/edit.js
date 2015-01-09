@@ -61,61 +61,65 @@ $(function () {
         screenShooter.edit.tool = screenShooter.tools.rectangle;
         $('.tool').removeClass('selected');
         $('.tool.rectangle').addClass('selected');
-        setSelectable(false);
+        resetCanvas();
     });
 
     $('.tool.ellipse').click(function () {
         screenShooter.edit.tool = screenShooter.tools.ellipse;
         $('.tool').removeClass('selected');
         $('.tool.ellipse').addClass('selected');
-        setSelectable(false);
+        resetCanvas();
     });
 
     $('.tool.text').click(function () {
         screenShooter.edit.tool = screenShooter.tools.text;
         $('.tool').removeClass('selected');
         $('.tool.text').addClass('selected');
-        setSelectable(false);
+        resetCanvas();
+        screenShooter.edit.canvas.forEachObject(function (obj) {
+            if (obj.get('type') === 'i-text') {
+                obj.set('selectable', true);
+            }
+        });
     });
 
     $('.tool.arrow').click(function () {
         screenShooter.edit.tool = screenShooter.tools.arrow;
         $('.tool').removeClass('selected');
         $('.tool.arrow').addClass('selected');
-        setSelectable(false);
+        resetCanvas();
     });
 
     $('.tool.line').click(function () {
         screenShooter.edit.tool = screenShooter.tools.line;
         $('.tool').removeClass('selected');
         $('.tool.line').addClass('selected');
-        setSelectable(false);
+        resetCanvas();
     });
 
     $('.tool.free').click(function () {
         screenShooter.edit.tool = screenShooter.tools.free;
         $('.tool').removeClass('selected');
         $('.tool.free').addClass('selected');
-        setSelectable(false);
+        resetCanvas();
+        screenShooter.edit.canvas.isDrawingMode = true;
+        screenShooter.edit.canvas.freeDrawingBrush.color = 'red';
+        screenShooter.edit.canvas.freeDrawingBrush.width = 3;
     });
 
     $('.tool.move').click(function () {
         screenShooter.edit.tool = screenShooter.tools.move;
         $('.tool').removeClass('selected');
         $('.tool.move').addClass('selected');
+        resetCanvas();
         setSelectable(true);
-        screenShooter.edit.canvas.forEachObject(function (obj) {
-            if (obj.get('type') === 'i-text') {
-                obj.exitEditing();
-            }
-        });
     });
 
     $('.tool.crop').click(function () {
         screenShooter.edit.tool = screenShooter.tools.crop;
         $('.tool').removeClass('selected');
         $('.tool.crop').addClass('selected');
-        setSelectable(false);
+        resetCanvas();
     });
 });
 
@@ -171,9 +175,7 @@ function initCanvas(data) {
                     originY: 'center',
                     stroke: 'red',
                     strokeWidth: 3,
-                    fill: 'red',
-                    hasControls: false,
-                    hasBorders: false
+                    fill: 'red'
                 });
                 break;
             case screenShooter.tools.rectangle:
@@ -187,9 +189,7 @@ function initCanvas(data) {
                     angle: 0,
                     fill: null,
                     stroke: 'red',
-                    strokeWidth: 3,
-                    hasControls: false,
-                    hasBorders: false
+                    strokeWidth: 3
                 });
                 break;
             case screenShooter.tools.ellipse:
@@ -203,9 +203,7 @@ function initCanvas(data) {
                     angle: 0,
                     fill: null,
                     stroke: 'red',
-                    strokeWidth: 3,
-                    hasControls: false,
-                    hasBorders: false
+                    strokeWidth: 3
                 });
                 break;
             case screenShooter.tools.free:
@@ -216,13 +214,11 @@ function initCanvas(data) {
                 if (screenShooter.edit.isMouseOver) {
                     return;
                 }
-                setSelectable(false);
                 obj = new fabric.IText('双击输入文字(不支持输入法)', {
                     fontFamily: 'Microsoft Yahei',
                     left: pointer.x,
                     top: pointer.y,
-                    hasControls: false,
-                    hasBorders: false
+                    hasControls: false
                 });
 
                 obj.on('editing:entered', function (e) {
@@ -295,6 +291,20 @@ function initCanvas(data) {
             canvas.remove(canvas.getActiveObject());
         }
     }
+}
+
+function resetCanvas() {
+    screenShooter.edit.canvas.isDrawingMode = false;
+    screenShooter.edit.canvas.forEachObject(function (obj) {
+        obj.hasControls = false;
+        obj.hasBorders = false;
+        if (obj.get('type') === 'i-text') {
+            obj.exitEditing();
+            obj.hasBorders = true;
+        }
+    });
+    setSelectable(false);
+    screenShooter.edit.isEditing = false;
 }
 
 function setSelectable(selectable) {
