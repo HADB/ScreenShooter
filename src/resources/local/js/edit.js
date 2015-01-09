@@ -5,7 +5,9 @@ screenShooter.edit = {
     isEditing: false,
     lineWidth: 3,
     fontSize: 25,
-    color: '#FF0000'
+    color: '#FF0000',
+    needToSaveToEmail: false,
+    needToSaveFromEmail: false
 };
 
 $(function () {
@@ -49,6 +51,12 @@ $(function () {
                 if (data.Success) {
                     alert('发送成功！');
                     console.log('Success!');
+                    if (screenShooter.edit.needToSaveToEmail) {
+                        chrome.storage.local.set({ 'defaultToEmail': toUser });
+                    }
+                    if (screenShooter.edit.needToSaveFromEmail) {
+                        chrome.storage.local.set({ 'defaultFromEmail': fromUser });
+                    }
                 }
                 else {
                     consolog.log(data.Message);
@@ -351,4 +359,22 @@ function saveAndEmail() {
     $('.body .email').show();
     $('.send-email').show();
     $('#saved-screenshot').attr('src', $('#screenshot')[0].toDataURL());
+    chrome.storage.local.get('defaultToEmail', function (result) {
+        if (result.defaultToEmail) {
+            $('#to-user').val(result.defaultToEmail);
+            screenShooter.edit.needToSaveToEmail = false;
+        }
+        else {
+            screenShooter.edit.needToSaveToEmail = true;
+        }
+    });
+    chrome.storage.local.get('defaultFromEmail', function (result) {
+        if (result.defaultFromEmail) {
+            $('#from-user').val(result.defaultFromEmail);
+            screenShooter.edit.needToSaveFromEmail = false;
+        }
+        else {
+            screenShooter.edit.needToSaveFromEmail = true;
+        }
+    });
 }

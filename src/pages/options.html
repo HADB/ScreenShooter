@@ -5,6 +5,7 @@
     <title>选项 - ScreenShooter</title>
     <link href="../resources/third-party/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="../resources/local/css/common.css" rel="stylesheet">
+    <link href="../resources/local/css/options.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -13,11 +14,27 @@
             <h2>选项</h2>
         </div>
     </header>
-    <div>
+    <div class="body">
         <div class="container">
-            <p>
-                待添加
-            </p>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="default-to-email">默认收件人</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" id="default-to-email" placeholder="输入默认收件人">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="default-from-email">默认发件人</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" id="default-from-email" placeholder="输入默认发件人">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="save-button" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="bottom-area">
@@ -25,5 +42,7 @@
             <p>&copy; 2015 - <a href="http://nesc.newegg.com.cn/">Newegg NESC</a></p>
         </footer>
     </div>
+    <script src="../resources/third-party/jquery/2.1.1/jquery-2.1.1.min.js"></script>
+    <script src="../resources/local/js/options.js"></script>
 </body>
 </html>
