@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
     <app appid='ejpbdmcgjgcakonanabebmfbbaaidjci'>
-        <updatecheck codebase='http://nesc.newegg.com.cn/static/screen-shooter/ScreenShooter.crx' version='0.4'/>
+        <updatecheck codebase='http://nesc.newegg.com.cn/static/screen-shooter/ScreenShooter.crx' version='0.5'/>
     </app>
 </gupdate>

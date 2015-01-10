@@ -11,6 +11,7 @@ screenShooter.edit = {
 };
 
 $(function () {
+    loadLocales();
     chrome.runtime.sendMessage({ action: 'get-screenshot-data' }, function (response) {
         if (response.data) {
             initCanvas(response.data);
@@ -31,7 +32,7 @@ $(function () {
         var toUser = $('#to-user').val();
         var fromUser = $('#from-user').val();
         var content = $('#content').val();
-        var subject = $('#email-title').val();
+        var subject = $('#email-subject').val();
         var userAgent = $('#user-agent').val();
         var imgData = $('#saved-screenshot').attr("src");
         var body = '<html><body><div><h3>Content:</h3><p>' + content + '</p></div>';
@@ -49,7 +50,7 @@ $(function () {
             },
             success: function (data) {
                 if (data.Success) {
-                    alert('发送成功！');
+                    alert(chrome.i18n.getMessage('sentSuccessfully'));
                     console.log('Success!');
                     if (screenShooter.edit.needToSaveToEmail) {
                         chrome.storage.local.set({ 'defaultToEmail': toUser });
@@ -239,7 +240,7 @@ function initCanvas(data) {
                 if (screenShooter.edit.isMouseOver) {
                     return;
                 }
-                obj = new fabric.IText('双击输入文字(不支持输入法)', {
+                obj = new fabric.IText(chrome.i18n.getMessage('defaultTextContent'), {
                     fontFamily: 'Microsoft Yahei',
                     fontSize: screenShooter.edit.fontSize,
                     left: pointer.x,
@@ -379,4 +380,32 @@ function saveAndEmail() {
             screenShooter.edit.needToSaveFromEmail = true;
         }
     });
+}
+
+function loadLocales() {
+    $('.tool.move').attr('title', chrome.i18n.getMessage('toolNameMove'));
+    $('.tool.rectangle').attr('title', chrome.i18n.getMessage('toolNameRectangle'));
+    $('.tool.ellipse').attr('title', chrome.i18n.getMessage('toolNameEllipse'));
+    $('.tool.text').attr('title', chrome.i18n.getMessage('toolNameText'));
+    $('.tool.line').attr('title', chrome.i18n.getMessage('toolNameLine'));
+    $('.tool.free').attr('title', chrome.i18n.getMessage('toolNameFree'));
+
+    $('.line-width span').html(chrome.i18n.getMessage('lineWidth'));
+    $('.font-size span').html(chrome.i18n.getMessage('fontSize'));
+    $('.color span').html(chrome.i18n.getMessage('color'));
+
+    $('.save-to-file').html(chrome.i18n.getMessage('saveAs'));
+    $('.save-and-email').html(chrome.i18n.getMessage('sendEmail'));
+    $('.send-email').html(chrome.i18n.getMessage('send'));
+
+    $('label[for=email-subject]').html(chrome.i18n.getMessage('emailSubject'));
+    $('label[for=to-user]').html(chrome.i18n.getMessage('toUser'));
+    $('label[for=from-user]').html(chrome.i18n.getMessage('fromUser'));
+    $('label[for=content]').html(chrome.i18n.getMessage('content'));
+    $('label[for=saved-screenshot]').html(chrome.i18n.getMessage('screenshot'));
+
+    $('#email-subject').attr('placeholder', chrome.i18n.getMessage('emailSubjectPlaceHolder'));
+    $('#to-user').attr('placeholder', chrome.i18n.getMessage('toUserPlaceHolder'));
+    $('#from-user').attr('placeholder', chrome.i18n.getMessage('fromUserPlaceHolder'));
+    $('#content').attr('placeholder', chrome.i18n.getMessage('contentPlaceHolder'));
 }

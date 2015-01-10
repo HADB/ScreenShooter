@@ -99,7 +99,7 @@ header {
     float: left;
     margin-left: 50px;
     margin-top: 5px;
-    width: 400px;
+    width: 450px;
 }
 
     .options .input-group {
@@ -112,7 +112,7 @@ header {
         }
 
         .options .input-group.line-width, .options .input-group.font-size {
-            width: 110px;
+            width: 140px;
         }
 
         .options .input-group.color {

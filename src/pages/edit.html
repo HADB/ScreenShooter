@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>编辑 - ScreenShooter</title>
+    <title>Edit - ScreenShooter</title>
     <link href="../resources/third-party/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="../resources/local/css/common.css" rel="stylesheet">
     <link href="../resources/local/css/edit.css" rel="stylesheet" />
@@ -13,34 +13,34 @@
             <div class="row">
                 <div class="title">ScreenShooter</div>
                 <div class="tools">
-                    <div class="tool move" title="移动"></div>
-                    <div class="tool rectangle" title="矩形"></div>
-                    <div class="tool ellipse" title="椭圆"></div>
-                    <div class="tool text" title="文字"></div>
-                    <div class="tool line" title="线条"></div>
-                    <div class="tool free" title="自由"></div>
+                    <div class="tool move" title=""></div>
+                    <div class="tool rectangle" title=""></div>
+                    <div class="tool ellipse" title=""></div>
+                    <div class="tool text" title=""></div>
+                    <div class="tool line" title=""></div>
+                    <div class="tool free" title=""></div>
                     <!--<div class="tool arrow" title="箭头"></div>-->
                     <!--<div class="tool crop" title="剪裁"></div>-->
                 </div>
                 <div class="options">
                     <div class="input-group line-width">
-                        <span class="input-group-addon">粗细</span>
-                        <input type="text" class="form-control" placeholder="线条粗细">
+                        <span class="input-group-addon"></span>
+                        <input type="text" class="form-control">
                     </div>
                     <div class="input-group font-size">
-                        <span class="input-group-addon">字号</span>
-                        <input type="text" class="form-control" placeholder="字号">
+                        <span class="input-group-addon"></span>
+                        <input type="text" class="form-control">
                     </div>
                     <div class="input-group color">
-                        <span class="input-group-addon">颜色</span>
-                        <input type="color" class="form-control" placeholder="线条和文字颜色">
+                        <span class="input-group-addon"></span>
+                        <input type="color" class="form-control">
                     </div>
                 </div>
 
                 <div class="buttons">
-                    <button type="button" class="btn btn-primary save-to-file">另存为</button>
-                    <button type="button" class="btn btn-primary save-and-email">发邮件</button>
-                    <button type="button" class="btn btn-primary send-email" style="display:none">发送</button>
+                    <button type="button" class="btn btn-primary save-to-file"></button>
+                    <button type="button" class="btn btn-primary save-and-email"></button>
+                    <button type="button" class="btn btn-primary send-email" style="display:none"></button>
                 </div>
             </div>
         </div>
@@ -49,23 +49,23 @@
         <canvas id="screenshot"></canvas>
         <div class="container email" style="display:none">
             <div class="form-group">
-                <label for="email-title">邮件标题</label>
-                <input type="text" class="form-control" id="email-title" placeholder="输入邮件标题">
+                <label for="email-subject"></label>
+                <input type="text" class="form-control" id="email-subject" placeholder="">
             </div>
             <div class="form-group">
-                <label for="to-user">收件人</label>
-                <input type="text" class="form-control" id="to-user" placeholder="输入收件人邮箱(可在选项中配置默认收件人)">
+                <label for="to-user"></label>
+                <input type="text" class="form-control" id="to-user" placeholder="">
             </div>
             <div class="form-group">
-                <label for="from-user">发件人</label>
-                <input type="text" class="form-control" id="from-user" placeholder="输入发件人邮箱(可在选项中配置默认发件人)">
+                <label for="from-user"></label>
+                <input type="text" class="form-control" id="from-user" placeholder="">
             </div>
             <div class="form-group">
-                <label for="content">正文</label>
-                <textarea type="text" class="form-control" id="content" placeholder="输入正文文本" rows="3"></textarea>
+                <label for="content"></label>
+                <textarea type="text" class="form-control" id="content" placeholder="" rows="3"></textarea>
             </div>
             <div class="form-group">
-                <label for="saved-screenshot">截图</label>
+                <label for="saved-screenshot"></label>
                 <img id="saved-screenshot" class="img-thumbnail" />
             </div>
             <div class="form-group">

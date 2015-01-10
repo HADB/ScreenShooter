@@ -1,0 +1,125 @@
+﻿{
+    "menuVisible": {
+        "message": "<i class='fa fa-eye'></i>Capture visible part"
+    },
+    "menuSelected": {
+        "message": "<i class='fa fa-crop'></i>Capture selected area"
+    },
+    "menuEntire": {
+        "message": "<i class='fa fa-desktop'></i>Capture entire page"
+    },
+    "menuUpload": {
+        "message": "<i class='fa fa-upload'></i>Select a local image"
+    },
+    "menuHelpAndFeedback": {
+        "message": "<i class='fa fa-question-circle'></i>Help and feedback"
+    },
+    "menuOptions": {
+        "message": "<i class='fa fa-cog'></i>Options"
+    },
+    "toolNameMove": {
+        "message": "Move"
+    },
+    "toolNameRectangle": {
+        "message": "Rectangle"
+    },
+    "toolNameEllipse": {
+        "message": "Ellipse"
+    },
+    "toolNameText": {
+        "message": "Text"
+    },
+    "toolNameLine": {
+        "message": "Line"
+    },
+    "toolNameFree": {
+        "message": "Free"
+    },
+    "lineWidth": {
+        "message": "LineWidth"
+    },
+    "fontSize": {
+        "message": "FontSize"
+    },
+    "color": {
+        "message": "Color"
+    },
+    "saveAs": {
+        "message": "Save As"
+    },
+    "sendEmail": {
+        "message": "Send Email"
+    },
+    "emailSubject": {
+        "message": "Subject"
+    },
+    "emailSubjectPlaceHolder": {
+        "message": "Enter the subject of this email"
+    },
+    "toUser": {
+        "message": "To"
+    },
+    "toUserPlaceHolder": {
+        "message": "Enter the email address where you want to sent this email (You can change the default value in options)"
+    },
+    "fromUser": {
+        "message": "From"
+    },
+    "fromUserPlaceHolder": {
+        "message": "Enter your email address (You can change the default value in options)"
+    },
+    "content": {
+        "message": "Content"
+    },
+    "contentPlaceHolder": {
+        "message": "Enter Content"
+    },
+    "screenshot": {
+        "message": "Screenshot"
+    },
+    "send": {
+        "message": "Send"
+    },
+    "edit": {
+        "message": "Edit"
+    },
+    "defaultToEmail": {
+        "message": "Default To Email"
+    },
+    "defaultToEmailPlaceHolder": {
+        "message": "Enter an email address where you want to send default"
+    },
+    "defaultFromEmail": {
+        "message": "Default From Email"
+    },
+    "defaultFromEmailPlaceHolder": {
+        "message": "Enter your email address"
+    },
+    "save": {
+        "message": "Save"
+    },
+    "options": {
+        "message": "Options"
+    },
+    "help": {
+        "message": "Help"
+    },
+    "helpContent": {
+        "message": "<ol><li>You can only use \"Capture visible part\" now. The other three functions are under development.</li><li>You can move any object using the <img src='../resources/local/img/move.png' /> Move button.</li><li>You can delete an object by press the <kbd>Del</kbd> key when you select it.</li><li>You can set default email addresses in Options page. If not, we will auto save your first email addresses.</li><li>The Text object doesn't support typing Chinese, but you can paste.</li></ol>"
+    },
+    "feedback": {
+        "message": "Feedback"
+    },
+    "feedbackContent": {
+        "message": "<p>Send Email to <a href='mailto://Bean.B.Deng@newegg.com'>Bean.B.Deng@newegg.com</a></p>"
+    },
+    "defaultTextContent": {
+        "message": "Click to edit."
+    },
+    "saved": {
+        "message": "Saved!"
+    },
+    "sentSuccessfully": {
+        "message": "Sent Successfully!"
+    }
+}
