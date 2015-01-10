@@ -30,6 +30,8 @@ $(function () {
 
     $('.send-email').click(function () {
         $('#sendingModal').modal();
+
+
         var toUser = $('#to-user').val();
         var fromUser = $('#from-user').val();
         var content = $('#content').val();
@@ -38,37 +40,27 @@ $(function () {
         var imgData = $('#saved-screenshot').attr("src");
         var body = '<html><body><div><h3>Content:</h3><p>' + content + '</p></div>';
         body += '<div><h3>User-Agent:</h3><p>' + userAgent + '</p></div>';
-        body += '<div><h3>ScreenShot:</h3><img src="' + imgData + '" /></div></body></html>';
+
         $.ajax({
-            url: 'http://nesc.newegg.com.cn/SendEmail',
+            url: 'http://kpi:21346/api/Upload/Image',
             type: 'POST',
-            dataType: "JSON",
             data: {
-                'fromUser': fromUser,
-                'toUser': toUser,
-                'subject': subject,
-                'body': body
+                'data': imgData
             },
             success: function (data) {
                 if (data.Success) {
-                    $('#sending-status-message').html(chrome.i18n.getMessage('sentSuccessfully'));
-                    $('.loading').hide();
-                    $('#sendingModal .btn-primary').removeClass('btn-primary').addClass('btn-success');
-                    if (screenShooter.edit.needToSaveToEmail) {
-                        chrome.storage.local.set({ 'defaultToEmail': toUser });
-                    }
-                    if (screenShooter.edit.needToSaveFromEmail) {
-                        chrome.storage.local.set({ 'defaultFromEmail': fromUser });
-                    }
+                    var fileUrl = 'http://kpi:21346/Uploads/' + data.FileName;
+                    body += '<div><h3>ScreenShot:</h3><img src="' + fileUrl + '" /></div></body></html>';
+                    sendEmail(fromUser, toUser, subject, body);
                 }
                 else {
-                    $('#sending-status-message').html("Error:" + data.Message);
-                    $('.loading').hide();
+                    body += '<div><h3>ScreenShot:</h3><img src="' + imgData + '" /></div></body></html>';
+                    sendEmail(fromUser, toUser, subject, body);
                 }
             },
-            error: function () {
-                $('#sending-status-message').html("Error:" + data.Message);
-                $('.loading').hide();
+            error: function (data) {
+                body += '<div><h3>ScreenShot:</h3><img src="' + imgData + '" /></div></body></html>';
+                sendEmail(fromUser, toUser, subject, body);
             }
         });
     });
@@ -415,4 +407,39 @@ function loadLocales() {
     $('#content').attr('placeholder', chrome.i18n.getMessage('contentPlaceHolder'));
     $('#sending-status-message').html(chrome.i18n.getMessage('sendingMessage'));
     $('#sendingModal .modal-title').html(chrome.i18n.getMessage('emailStatus'));
+}
+
+function sendEmail(fromUser, toUser, subject, body) {
+    $.ajax({
+        url: 'http://nesc.newegg.com.cn/SendEmail',
+        type: 'POST',
+        dataType: "JSON",
+        data: {
+            'fromUser': fromUser,
+            'toUser': toUser,
+            'subject': subject,
+            'body': body
+        },
+        success: function (data) {
+            if (data.Success) {
+                $('#sending-status-message').html(chrome.i18n.getMessage('sentSuccessfully'));
+                $('.loading').hide();
+                $('#sendingModal .btn-primary').removeClass('btn-primary').addClass('btn-success');
+                if (screenShooter.edit.needToSaveToEmail) {
+                    chrome.storage.local.set({ 'defaultToEmail': toUser });
+                }
+                if (screenShooter.edit.needToSaveFromEmail) {
+                    chrome.storage.local.set({ 'defaultFromEmail': fromUser });
+                }
+            }
+            else {
+                $('#sending-status-message').html("Error:" + data.Message);
+                $('.loading').hide();
+            }
+        },
+        error: function () {
+            $('#sending-status-message').html("Error:" + data.Message);
+            $('.loading').hide();
+        }
+    });
 }
