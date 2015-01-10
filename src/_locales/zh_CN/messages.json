@@ -127,5 +127,8 @@
     },
     "emailStatus": {
         "message": "邮件状态 <img class='loading' src='../resources/local/img/loading.png' />"
+    },
+    "message": {
+        "message": "消息"
     }
 }

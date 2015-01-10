@@ -1,4 +1,7 @@
 $(function () {
+    document.title = chrome.i18n.getMessage('options') + ' - ScreenShooter';
+    $('header .container h2').html(chrome.i18n.getMessage('options'));
+
     $('label[for=default-to-email]').html(chrome.i18n.getMessage('defaultToEmail'));
     $('label[for=default-from-email]').html(chrome.i18n.getMessage('defaultFromEmail'));
 
@@ -6,8 +9,8 @@ $(function () {
     $('#default-from-email').attr('placeholder', chrome.i18n.getMessage('defaultFromEmailPlaceHolder'));
 
     $('#save-button').html(chrome.i18n.getMessage('save'));
-    $('header .container h2').html(chrome.i18n.getMessage('options'));
-    document.title = chrome.i18n.getMessage('options') + ' - ScreenShooter';
+    $('#saving-status-message').html(chrome.i18n.getMessage('saved'));
+    $('#saveModal .modal-title').html(chrome.i18n.getMessage('message'));
 
     chrome.storage.local.get('defaultToEmail', function (result) {
         $('#default-to-email').val(result.defaultToEmail);
@@ -19,6 +22,6 @@ $(function () {
     $('#save-button').click(function () {
         chrome.storage.local.set({ 'defaultToEmail': $('#default-to-email').val() });
         chrome.storage.local.set({ 'defaultFromEmail': $('#default-from-email').val() });
-        alert(chrome.i18n.getMessage('saved'));
+        $('#saveModal').modal();
     });
 });

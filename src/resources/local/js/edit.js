@@ -54,7 +54,6 @@ $(function () {
                     $('#sending-status-message').html(chrome.i18n.getMessage('sentSuccessfully'));
                     $('.loading').hide();
                     $('#sendingModal .btn-primary').removeClass('btn-primary').addClass('btn-success');
-                    console.log('Email Sent Successfully!');
                     if (screenShooter.edit.needToSaveToEmail) {
                         chrome.storage.local.set({ 'defaultToEmail': toUser });
                     }
@@ -63,11 +62,13 @@ $(function () {
                     }
                 }
                 else {
-                    consolog.log(data.Message);
+                    $('#sending-status-message').html("Error:" + data.Message);
+                    $('.loading').hide();
                 }
             },
             error: function () {
-                console.log('Error!');
+                $('#sending-status-message').html("Error:" + data.Message);
+                $('.loading').hide();
             }
         });
     });
