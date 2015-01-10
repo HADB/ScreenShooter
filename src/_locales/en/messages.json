@@ -120,6 +120,12 @@
         "message": "Saved!"
     },
     "sentSuccessfully": {
-        "message": "Sent Successfully!"
+        "message": "Sent successfully!"
+    },
+    "sendingMessage": {
+        "message": "Sending... Please wait!"
+    },
+    "emailStatus": {
+        "message": "Email Status <img class='loading' src='../resources/local/img/loading.png' />"
     }
 }

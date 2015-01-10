@@ -118,3 +118,36 @@ header {
         .options .input-group.color {
             width: 160px;
         }
+
+.modal-dialog {
+    margin-top: 100px;
+}
+
+.loading {
+    width: 25px;
+    height: 25px;
+    -webkit-animation: loading 2s linear infinite both;
+    animation: loading 2s linear infinite both;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes loading {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}

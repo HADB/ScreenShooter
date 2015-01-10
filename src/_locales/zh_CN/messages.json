@@ -121,5 +121,11 @@
     },
     "sentSuccessfully": {
         "message": "发送成功！"
+    },
+    "sendingMessage": {
+        "message": "发送中... 请稍等！"
+    },
+    "emailStatus": {
+        "message": "邮件状态 <img class='loading' src='../resources/local/img/loading.png' />"
     }
 }

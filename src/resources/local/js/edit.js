@@ -29,6 +29,7 @@ $(function () {
     });
 
     $('.send-email').click(function () {
+        $('#sendingModal').modal();
         var toUser = $('#to-user').val();
         var fromUser = $('#from-user').val();
         var content = $('#content').val();
@@ -50,8 +51,10 @@ $(function () {
             },
             success: function (data) {
                 if (data.Success) {
-                    alert(chrome.i18n.getMessage('sentSuccessfully'));
-                    console.log('Success!');
+                    $('#sending-status-message').html(chrome.i18n.getMessage('sentSuccessfully'));
+                    $('.loading').hide();
+                    $('#sendingModal .btn-primary').removeClass('btn-primary').addClass('btn-success');
+                    console.log('Email Sent Successfully!');
                     if (screenShooter.edit.needToSaveToEmail) {
                         chrome.storage.local.set({ 'defaultToEmail': toUser });
                     }
@@ -359,6 +362,7 @@ function saveAndEmail() {
     $('.canvas-container').hide();
     $('.save-to-file').hide();
     $('.save-and-email').hide();
+    $('.options').hide();
     $('.body .email').show();
     $('.send-email').show();
     $('#saved-screenshot').attr('src', $('#screenshot')[0].toDataURL());
@@ -408,4 +412,6 @@ function loadLocales() {
     $('#to-user').attr('placeholder', chrome.i18n.getMessage('toUserPlaceHolder'));
     $('#from-user').attr('placeholder', chrome.i18n.getMessage('fromUserPlaceHolder'));
     $('#content').attr('placeholder', chrome.i18n.getMessage('contentPlaceHolder'));
+    $('#sending-status-message').html(chrome.i18n.getMessage('sendingMessage'));
+    $('#sendingModal .modal-title').html(chrome.i18n.getMessage('emailStatus'));
 }
