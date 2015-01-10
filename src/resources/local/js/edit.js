@@ -7,7 +7,9 @@ screenShooter.edit = {
     fontSize: 25,
     color: '#FF0000',
     needToSaveToEmail: false,
-    needToSaveFromEmail: false
+    needToSaveFromEmail: false,
+    cropCenterMouseDown: false,
+    cropCenterMouseDownPoint: { x: 0, y: 0 }
 };
 
 $(function () {
@@ -147,6 +149,20 @@ $(function () {
         screenShooter.edit.color = $('.options .color input').val();
         screenShooter.edit.canvas.freeDrawingBrush.color = screenShooter.edit.color;
     });
+
+    $('.crop-area-center').mousedown(function (e) {
+        screenShooter.edit.cropCenterMouseDown = true;
+        screenShooter.edit.cropCenterMouseDownPoint.x = e.pageX;
+        screenShooter.edit.cropCenterMouseDownPoint.y = e.pageY;
+    });
+    $('.crop-area-center').mouseup(function () {
+        screenShooter.edit.cropCenterMouseDown = false;
+    });
+    $('.crop-area-center').mousemove(function () {
+        if (screenShooter.edit.cropCenterMouseDown) {
+
+        }
+    });
 });
 
 function initCanvas(data) {
@@ -253,6 +269,9 @@ function initCanvas(data) {
             case screenShooter.tools.arrow:
                 //TODO:添加箭头功能
                 break;
+            case screenShooter.tools.crop:
+                $('.crop-area').removeClass('hide');
+                break;
         }
 
         if (obj) {
@@ -261,46 +280,72 @@ function initCanvas(data) {
     });
 
     canvas.on('mouse:move', function (o) {
-        if (isDown && obj) {
-            var pointer = canvas.getPointer(o.e);
-            switch (screenShooter.edit.tool) {
-                case screenShooter.tools.line:
-                    obj.set({ x2: pointer.x, y2: pointer.y });
+        var pointer = canvas.getPointer(o.e);
+        if (isDown) {
+            if (obj) {
+                switch (screenShooter.edit.tool) {
+                    case screenShooter.tools.line:
+                        obj.set({ x2: pointer.x, y2: pointer.y });
 
-                    break;
+                        break;
 
-                case screenShooter.tools.rectangle:
-                    if (startX > pointer.x) {
-                        obj.set({ left: Math.abs(pointer.x) });
-                    }
-                    if (startY > pointer.y) {
-                        obj.set({ top: Math.abs(pointer.y) });
-                    }
+                    case screenShooter.tools.rectangle:
+                        if (startX > pointer.x) {
+                            obj.set({ left: Math.abs(pointer.x) });
+                        }
+                        if (startY > pointer.y) {
+                            obj.set({ top: Math.abs(pointer.y) });
+                        }
 
-                    obj.set({ width: Math.abs(startX - pointer.x) });
-                    obj.set({ height: Math.abs(startY - pointer.y) });
-                    break;
+                        obj.set({ width: Math.abs(startX - pointer.x) });
+                        obj.set({ height: Math.abs(startY - pointer.y) });
+                        break;
 
-                case screenShooter.tools.ellipse:
-                    if (startX > pointer.x) {
-                        obj.set({ left: Math.abs(pointer.x) });
-                    }
-                    if (startY > pointer.y) {
-                        obj.set({ top: Math.abs(pointer.y) });
-                    }
+                    case screenShooter.tools.ellipse:
+                        if (startX > pointer.x) {
+                            obj.set({ left: Math.abs(pointer.x) });
+                        }
+                        if (startY > pointer.y) {
+                            obj.set({ top: Math.abs(pointer.y) });
+                        }
 
-                    obj.set({ rx: Math.abs((startX - pointer.x) / 2) });
-                    obj.set({ ry: Math.abs((startY - pointer.y) / 2) });
-                    break;
+                        obj.set({ rx: Math.abs((startX - pointer.x) / 2) });
+                        obj.set({ ry: Math.abs((startY - pointer.y) / 2) });
+                        break;
 
-                case screenShooter.tools.move:
-                    break;
-                case screenShooter.tools.text:
+                    case screenShooter.tools.move:
+                        break;
+                    case screenShooter.tools.text:
 
-                    break;
+                        break;
+
+                }
             }
-            canvas.renderAll();
+            else {
+                switch (screenShooter.edit.tool) {
+                    case screenShooter.tools.crop:
+                        var documentHeight = $('body').height();
+                        var documentWidth = $('body').width();
+                        $('.crop-area-top').css('height', startY);
+                        $('.crop-area-bottom').css('top', pointer.y + 45);
+                        $('.crop-area-bottom').css('height', documentHeight - pointer.y);
+                        $('.crop-area-left').css('height', pointer.y - startY);
+                        $('.crop-area-left').css('top', startY + 45);
+                        $('.crop-area-left').css('width', startX);
+                        $('.crop-area-right').css('height', pointer.y - startY);
+                        $('.crop-area-right').css('top', startY + 45);
+                        $('.crop-area-right').css('left', pointer.x);
+                        $('.crop-area-right').css('width', documentWidth - pointer.x);
+                        $('.crop-area-center').css('top', startY + 45);
+                        $('.crop-area-center').css('left', startX);
+                        $('.crop-area-center').css('height', pointer.y - startY);
+                        $('.crop-area-center').css('width', pointer.x - startX);
+                        break;
+                }
+            }
         }
+
+        canvas.renderAll();
     });
 
     canvas.on('mouse:up', function (o) {
@@ -386,6 +431,7 @@ function loadLocales() {
     $('.tool.text').attr('title', chrome.i18n.getMessage('toolNameText'));
     $('.tool.line').attr('title', chrome.i18n.getMessage('toolNameLine'));
     $('.tool.free').attr('title', chrome.i18n.getMessage('toolNameFree'));
+    $('.tool.crop').attr('title', chrome.i18n.getMessage('toolNameCrop'));
 
     $('.line-width span').html(chrome.i18n.getMessage('lineWidth'));
     $('.font-size span').html(chrome.i18n.getMessage('fontSize'));

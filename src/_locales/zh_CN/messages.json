@@ -35,6 +35,9 @@
     "toolNameFree": {
         "message": "自由线条"
     },
+    "toolNameCrop": {
+        "message": "剪裁"
+    },
     "lineWidth": {
         "message": "粗细"
     },

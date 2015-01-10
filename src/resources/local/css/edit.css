@@ -155,3 +155,30 @@ header {
 .canvas-container {
     margin: 0 auto;
 }
+
+.crop-area {
+    position: absolute;
+    z-index: 2999;
+    background-color: rgba(0,0,0,.4);
+}
+
+.crop-area-top {
+    left: 0;
+    top: 45px;
+    width: 100%;
+}
+
+.crop-area-bottom {
+    left: 0;
+    width: 100%;
+}
+
+.crop-area-left {
+    left: 0;
+}
+
+.crop-area-center {
+    background-color: rgba(0,0,0,0);
+    cursor: move;
+    outline: rgb(0, 0, 0) dashed 1px;
+}

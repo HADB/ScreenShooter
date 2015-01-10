@@ -35,6 +35,9 @@
     "toolNameFree": {
         "message": "Free"
     },
+    "toolNameCrop": {
+        "message": "Crop"
+    },
     "lineWidth": {
         "message": "LineWidth"
     },
