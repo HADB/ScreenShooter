@@ -31,9 +31,18 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
             case "selected":
                 break;
+            case "upload":
+                chrome.tabs.create({
+                    url: chrome.extension.getURL("pages/upload.html")
+                });
+                break;
         }
     }
     else if (action === "get-screenshot-data") {
         sendResponse({ data: screenShooter.data });
+    }
+    else if (action === "set-screenshot-data") {
+        screenShooter.data = message.data;
+        sendResponse({ result: true });
     }
 });

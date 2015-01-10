@@ -10,6 +10,10 @@ $(function () {
         openPage("visible");
     });
 
+    $("#upload").click(function () {
+        openPage("upload");
+    });
+
     $("#help").click(function () {
         openPage("help");
     });

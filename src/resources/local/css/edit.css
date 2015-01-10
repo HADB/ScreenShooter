@@ -151,3 +151,7 @@ header {
         transform: rotate(360deg);
     }
 }
+
+.canvas-container {
+    margin: 0 auto;
+}
