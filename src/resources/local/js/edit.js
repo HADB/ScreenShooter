@@ -9,7 +9,12 @@ screenShooter.edit = {
     needToSaveToEmail: false,
     needToSaveFromEmail: false,
     cropCenterMouseDown: false,
-    cropCenterMouseDownPoint: { x: 0, y: 0 }
+    cropCenterMouseDownPoint: { x: 0, y: 0 },
+    cropCenterAreaStart: { left: 0, top: 0 },
+    cropLeftAreaStart: { left: 0, top: 0, width: 0, height: 0 },
+    cropRightAreaStart: { left: 0, top: 0, width: 0, height: 0 },
+    cropTopAreaStart: { left: 0, width: 0, height: 0 },
+    cropBottomAreaStart: { left: 0, width: 0, top: 0, height: 0 },
 };
 
 $(function () {
@@ -154,13 +159,79 @@ $(function () {
         screenShooter.edit.cropCenterMouseDown = true;
         screenShooter.edit.cropCenterMouseDownPoint.x = e.pageX;
         screenShooter.edit.cropCenterMouseDownPoint.y = e.pageY;
+        screenShooter.edit.cropCenterAreaStart.left = $('.crop-area-center').offset().left;
+        screenShooter.edit.cropCenterAreaStart.top = $('.crop-area-center').offset().top;
+        screenShooter.edit.cropTopAreaStart.height = $('.crop-area-top').height();
+        screenShooter.edit.cropBottomAreaStart.top = $('.crop-area-bottom').offset().top;
+        screenShooter.edit.cropBottomAreaStart.height = $('.crop-area-bottom').height();
+        screenShooter.edit.cropLeftAreaStart.top = $('.crop-area-left').offset().top;
+        screenShooter.edit.cropLeftAreaStart.width = $('.crop-area-left').width();
+        screenShooter.edit.cropRightAreaStart.left = $('.crop-area-right').offset().left;
+        screenShooter.edit.cropRightAreaStart.top = $('.crop-area-right').offset().top;
+        screenShooter.edit.cropRightAreaStart.width = $('.crop-area-right').width();
     });
     $('.crop-area-center').mouseup(function () {
         screenShooter.edit.cropCenterMouseDown = false;
     });
-    $('.crop-area-center').mousemove(function () {
+    $('.crop-area-center').mousemove(function (e) {
         if (screenShooter.edit.cropCenterMouseDown) {
+            var moveX = e.pageX - screenShooter.edit.cropCenterMouseDownPoint.x;
+            var moveY = e.pageY - screenShooter.edit.cropCenterMouseDownPoint.y;
 
+            var centerAfterLeft = screenShooter.edit.cropCenterAreaStart.left + moveX;
+            var centerAfterTop = screenShooter.edit.cropCenterAreaStart.top + moveY;
+            var containerLeft = $('.canvas-container').offset().left;
+            var containerTop = $('.canvas-container').offset().top;
+
+            var containerWidth = $('.canvas-container').width();
+            var containerHeight = $('.canvas-container').height();
+            var centerWidth = $('.crop-area-center').width();
+            var centerHeight = $('.crop-area-center').height();
+
+            $('.crop-area-center').css('left', screenShooter.edit.cropCenterAreaStart.left + moveX);
+            $('.crop-area-top').css('left', containerLeft);
+            $('.crop-area-bottom').css('left', containerLeft);
+            $('.crop-area-left').css('left', containerLeft);
+            $('.crop-area-left').css('width', screenShooter.edit.cropLeftAreaStart.width + moveX);
+            $('.crop-area-right').css('left', screenShooter.edit.cropRightAreaStart.left + moveX);
+            $('.crop-area-right').css('width', containerLeft + $('.canvas-container').width() - screenShooter.edit.cropRightAreaStart.left - moveX);
+            if (centerAfterLeft < containerLeft) {
+                $('.crop-area-center').css('left', containerLeft);
+                $('.crop-area-left').css('left', containerLeft);
+                $('.crop-area-left').css('width', 0);
+                $('.crop-area-right').css('left', containerLeft + centerWidth);
+                $('.crop-area-right').css('width', $('.canvas-container').width() - centerWidth);
+            }
+            if (centerAfterLeft > containerLeft + $('.canvas-container').width() - centerWidth) {
+                $('.crop-area-center').css('left', containerLeft + $('.canvas-container').width() - centerWidth);
+                $('.crop-area-left').css('left', containerLeft);
+                $('.crop-area-left').css('width', $('.canvas-container').width() - centerWidth);
+                $('.crop-area-right').css('left', containerLeft + $('.canvas-container').width());
+                $('.crop-area-right').css('width', 0);
+            }
+
+            $('.crop-area-center').css('top', screenShooter.edit.cropCenterAreaStart.top + moveY);
+            $('.crop-area-top').css('height', screenShooter.edit.cropTopAreaStart.height + moveY);
+            $('.crop-area-bottom').css('top', screenShooter.edit.cropBottomAreaStart.top + moveY);
+            $('.crop-area-bottom').css('height', screenShooter.edit.cropBottomAreaStart.height - moveY);
+            $('.crop-area-left').css('top', screenShooter.edit.cropLeftAreaStart.top + moveY);
+            $('.crop-area-right').css('top', screenShooter.edit.cropRightAreaStart.top + moveY);
+            if (centerAfterTop < containerTop) {
+                $('.crop-area-center').css('top', containerTop);
+                $('.crop-area-top').css('height', 0);
+                $('.crop-area-bottom').css('top', containerTop + $('.crop-area-center').height());
+                $('.crop-area-bottom').css('height', $('.canvas-container').height() - $('.crop-area-center').height());
+                $('.crop-area-left').css('top', containerTop);
+                $('.crop-area-right').css('top', containerTop);
+            }
+            if (centerAfterTop > $('.canvas-container').height() - $('.crop-area-center').height() + containerTop) {
+                $('.crop-area-center').css('top', $('.canvas-container').height() - $('.crop-area-center').height() + containerTop);
+                $('.crop-area-top').css('height', $('.canvas-container').height() - $('.crop-area-center').height());
+                $('.crop-area-bottom').css('top', $('.canvas-container').height() + containerTop);
+                $('.crop-area-bottom').css('height', 0);
+                $('.crop-area-left').css('top', $('.canvas-container').height() - $('.crop-area-center').height() + containerTop);
+                $('.crop-area-right').css('top', $('.canvas-container').height() - $('.crop-area-center').height() + containerTop);
+            }
         }
     });
 });
@@ -327,17 +398,22 @@ function initCanvas(data) {
                         var documentHeight = $('body').height();
                         var documentWidth = $('body').width();
                         $('.crop-area-top').css('height', startY);
+                        $('.crop-area-top').css('left', $('.canvas-container').offset().left);
+                        $('.crop-area-top').css('width', $('.canvas-container').width());
+                        $('.crop-area-bottom').css('left', $('.canvas-container').offset().left);
                         $('.crop-area-bottom').css('top', pointer.y + 45);
+                        $('.crop-area-bottom').css('width', $('.canvas-container').width());
                         $('.crop-area-bottom').css('height', documentHeight - pointer.y);
+                        $('.crop-area-left').css('left', $('.canvas-container').offset().left);
                         $('.crop-area-left').css('height', pointer.y - startY);
                         $('.crop-area-left').css('top', startY + 45);
                         $('.crop-area-left').css('width', startX);
                         $('.crop-area-right').css('height', pointer.y - startY);
                         $('.crop-area-right').css('top', startY + 45);
-                        $('.crop-area-right').css('left', pointer.x);
-                        $('.crop-area-right').css('width', documentWidth - pointer.x);
+                        $('.crop-area-right').css('left', pointer.x + $('.canvas-container').offset().left);
+                        $('.crop-area-right').css('width', $('.canvas-container').width() - pointer.x);
                         $('.crop-area-center').css('top', startY + 45);
-                        $('.crop-area-center').css('left', startX);
+                        $('.crop-area-center').css('left', startX + $('.canvas-container').offset().left);
                         $('.crop-area-center').css('height', pointer.y - startY);
                         $('.crop-area-center').css('width', pointer.x - startX);
                         break;
