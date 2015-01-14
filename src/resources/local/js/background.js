@@ -24,6 +24,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
                     quality: 100
                 }, function (data) {
                     screenShooter.data = data;
+                    screenShooter.cropSettings = null;
                     chrome.tabs.create({
                         url: chrome.extension.getURL("pages/edit.html")
                     });
@@ -36,7 +37,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
                     quality: 100
                 }, function (data) {
                     screenShooter.data = data;
-                    screenShooter.settings = cropSettings;
+                    screenShooter.cropSettings = cropSettings;
                     chrome.tabs.create({
                         url: chrome.extension.getURL("pages/edit.html")
                     });
@@ -52,11 +53,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     else if (action === "get-screenshot-data") {
         sendResponse({
             data: screenShooter.data,
-            settings: screenShooter.settings
+            cropSettings: screenShooter.cropSettings
         });
     }
     else if (action === "set-screenshot-data") {
         screenShooter.data = message.data;
+        screenShooter.cropSettings = message.cropSettings;
         sendResponse({ result: true });
     }
     else if (action === "execute-scripts") {

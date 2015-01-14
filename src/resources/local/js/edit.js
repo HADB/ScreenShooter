@@ -23,8 +23,8 @@ $(function () {
     chrome.runtime.sendMessage({ action: 'get-screenshot-data' }, function (response) {
         if (response.data) {
             screenShooter.edit.screenshotData = response.data;
-            if (response.settings) {
-                initCanvas(response.settings);
+            if (response.cropSettings) {
+                initCanvas(response.cropSettings);
             }
             else {
                 initCanvas();
