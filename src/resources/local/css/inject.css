@@ -1,0 +1,66 @@
+.crop-area {
+    position: absolute;
+    z-index: 2999;
+    background-color: rgba(0,0,0,.4);
+    -webkit-user-select: none;
+}
+
+.crop-area-top {
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.crop-area-bottom {
+    left: 0;
+    width: 100%;
+}
+
+.crop-area-left {
+    left: 0;
+}
+
+.crop-area-center {
+    text-align: center;
+    background-color: rgba(0,0,0,0);
+    cursor: move;
+    outline: rgb(0, 0, 0) dashed 1px;
+}
+
+.screen-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.4);
+    z-index: 2998;
+    -webkit-user-select: none;
+}
+
+.crop-button {
+    box-shadow: rgb(102, 102, 102) 0px 3px 7px;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    z-index: 3000;
+}

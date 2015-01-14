@@ -23,7 +23,12 @@ $(function () {
     chrome.runtime.sendMessage({ action: 'get-screenshot-data' }, function (response) {
         if (response.data) {
             screenShooter.edit.screenshotData = response.data;
-            initCanvas();
+            if (response.settings) {
+                initCanvas(response.settings);
+            }
+            else {
+                initCanvas();
+            }
         }
     });
 

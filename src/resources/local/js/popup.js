@@ -10,6 +10,11 @@ $(function () {
         openPage("visible");
     });
 
+    $("#selected").click(function () {
+        window.close();
+        chrome.runtime.sendMessage({ action: "execute-scripts" });
+    });
+
     $("#upload").click(function () {
         openPage("upload");
     });
