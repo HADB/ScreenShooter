@@ -178,7 +178,12 @@ header {
 }
 
 .crop-area-center {
+    text-align: center;
     background-color: rgba(0,0,0,0);
     cursor: move;
     outline: rgb(0, 0, 0) dashed 1px;
+}
+
+.crop-button {
+    box-shadow: rgb(102, 102, 102) 0px 3px 7px;
 }

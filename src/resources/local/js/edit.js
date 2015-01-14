@@ -1,6 +1,6 @@
 screenShooter.edit = {
     tool: {},
-    canvas: {},
+    canvas: null,
     isMouseOver: false,
     isEditing: false,
     lineWidth: 3,
@@ -15,13 +15,15 @@ screenShooter.edit = {
     cropRightAreaStart: { left: 0, top: 0, width: 0, height: 0 },
     cropTopAreaStart: { left: 0, width: 0, height: 0 },
     cropBottomAreaStart: { left: 0, width: 0, top: 0, height: 0 },
+    screenshotData: {}
 };
 
 $(function () {
     loadLocales();
     chrome.runtime.sendMessage({ action: 'get-screenshot-data' }, function (response) {
         if (response.data) {
-            initCanvas(response.data);
+            screenShooter.edit.screenshotData = response.data;
+            initCanvas();
         }
     });
 
@@ -234,30 +236,54 @@ $(function () {
             }
         }
     });
+
+    $('.crop-button').click(function () {
+        var cropLeft = $('.crop-area-center').offset().left - $('.canvas-container').offset().left;
+        var cropTop = $('.crop-area-center').offset().top - $('.canvas-container').offset().top;
+        var cropWidth = $('.crop-area-center').width();
+        var cropHeight = $('.crop-area-center').height();
+        initCanvas({ left: cropLeft, top: cropTop, width: cropWidth, height: cropHeight });
+        $('.crop-area').addClass('hide');
+        $('.crop-button').addClass('hide');
+        screenShooter.edit.tool = null;
+        $('.tool.crop').removeClass('selected');
+    });
 });
 
-function initCanvas(data) {
-    screenShooter.edit.canvas = new fabric.Canvas('screenshot', {
-        selection: false,
-    });
+function initCanvas(settings) {
+    if (!screenShooter.edit.canvas) {
+        screenShooter.edit.canvas = new fabric.Canvas('screenshot', {
+            selection: false,
+        });
+    }
     var canvas = screenShooter.edit.canvas;
     var image = new Image();
-    image.src = data;
     image.onload = function () {
         var bgImage = new fabric.Image(image);
         canvas.setDimensions({
             width: bgImage.getWidth(),
             height: bgImage.getHeight()
         });
+
         canvas.setBackgroundImage(bgImage, canvas.renderAll.bind(canvas));
+        if (settings) {
+            screenShooter.edit.screenshotData = canvas.toDataURL({
+                left: settings.left,
+                top: settings.top,
+                height: settings.height,
+                width: settings.width
+            });
+            settings = null;
+            image.src = screenShooter.edit.screenshotData;
+            canvas.clear();
+        }
     };
+    image.src = screenShooter.edit.screenshotData;
 
     var obj;
     var isDown;
     var startX;
     var startY;
-    var canvas = screenShooter.edit.canvas;
-
     canvas.on('mouse:over', function (e) {
         if (e.target.get('type') === 'i-text') {
             screenShooter.edit.isMouseOver = true;
@@ -342,6 +368,7 @@ function initCanvas(data) {
                 break;
             case screenShooter.tools.crop:
                 $('.crop-area').removeClass('hide');
+                $('.crop-button').addClass('hide');
                 break;
         }
 
@@ -419,9 +446,8 @@ function initCanvas(data) {
                         break;
                 }
             }
+            canvas.renderAll();
         }
-
-        canvas.renderAll();
     });
 
     canvas.on('mouse:up', function (o) {
@@ -433,11 +459,18 @@ function initCanvas(data) {
             }
             obj = null;
         }
+        if (screenShooter.edit.tool === screenShooter.tools.crop) {
+            $('.crop-button').removeClass('hide');
+        }
     });
 
     document.onkeydown = function (e) {
         if (e.keyCode === 46) {
             canvas.remove(canvas.getActiveObject());
+        }
+        if (e.keyCode === 27) {
+            $('.crop-area').addClass('hide');
+            $('.crop-button').addClass('hide');
         }
     }
 }
