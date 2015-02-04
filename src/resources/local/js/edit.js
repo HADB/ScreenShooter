@@ -52,7 +52,7 @@ $(function () {
         var subject = $('#email-subject').val();
         var userAgent = $('#user-agent').val();
         var imgData = $('#saved-screenshot').attr("src");
-        var body = '<html><body><div><h3>Content:</h3><p>' + content + '</p></div>';
+        var body = '<html><body style="font-family:Consolas;"><div><h3>Content:</h3><p>' + content + '</p></div>';
         body += '<div><h3>User-Agent:</h3><p>' + userAgent + '</p></div>';
 
         $.ajax({
@@ -64,16 +64,16 @@ $(function () {
             success: function (data) {
                 if (data.Success) {
                     var fileUrl = 'http://kpi:21346/Uploads/' + data.FileName;
-                    body += '<div><h3>ScreenShot:</h3><img src="' + fileUrl + '" /></div></body></html>';
+                    body += '<div><h3>Screenshot:</h3><img src="' + fileUrl + '" /></div></body></html>';
                     sendEmail(fromUser, toUser, subject, body);
                 }
                 else {
-                    body += '<div><h3>ScreenShot:</h3><img src="' + imgData + '" /></div></body></html>';
+                    body += '<div><h3>Screenshot:</h3><p>Screenshot upload failed!</p><img src="' + imgData + '" /></div></body></html>';
                     sendEmail(fromUser, toUser, subject, body);
                 }
             },
             error: function (data) {
-                body += '<div><h3>ScreenShot:</h3><img src="' + imgData + '" /></div></body></html>';
+                body += '<div><h3>Screenshot:</h3><p>Screenshot upload failed!</p><img src="' + imgData + '" /></div></body></html>';
                 sendEmail(fromUser, toUser, subject, body);
             }
         });
@@ -518,15 +518,7 @@ function saveAndEmail() {
     $('.body .email').show();
     $('.send-email').show();
     $('#saved-screenshot').attr('src', $('#screenshot')[0].toDataURL());
-    chrome.storage.local.get('defaultToEmail', function (result) {
-        if (result.defaultToEmail) {
-            $('#to-user').val(result.defaultToEmail);
-            screenShooter.edit.needToSaveToEmail = false;
-        }
-        else {
-            screenShooter.edit.needToSaveToEmail = true;
-        }
-    });
+    $('#to-user').val(screenShooter.settings.defaultToEmail);
     chrome.storage.local.get('defaultFromEmail', function (result) {
         if (result.defaultFromEmail) {
             $('#from-user').val(result.defaultFromEmail);
@@ -585,9 +577,6 @@ function sendEmail(fromUser, toUser, subject, body) {
                 $('#sending-status-message').html(chrome.i18n.getMessage('sentSuccessfully'));
                 $('.loading').hide();
                 $('#sendingModal .btn-primary').removeClass('btn-primary').addClass('btn-success');
-                if (screenShooter.edit.needToSaveToEmail) {
-                    chrome.storage.local.set({ 'defaultToEmail': toUser });
-                }
                 if (screenShooter.edit.needToSaveFromEmail) {
                     chrome.storage.local.set({ 'defaultFromEmail': fromUser });
                 }
