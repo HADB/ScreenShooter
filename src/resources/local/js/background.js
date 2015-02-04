@@ -63,7 +63,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
     else if (action === "execute-scripts") {
         console.log('getMessage');
-        chrome.tabs.query({ active: true }, function (tab) {
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
             console.log(tab[0].id);
             executeScripts(tab[0].id);
         });
